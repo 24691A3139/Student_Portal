@@ -1,0 +1,12 @@
+package mits.Student_Portal_Backend;
+
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class Student_Controller {
+
+	private final Student_Service ss;
+	public Student_Service(Student_Service  repo) {
+		this.ss=repo;
+	}
+}

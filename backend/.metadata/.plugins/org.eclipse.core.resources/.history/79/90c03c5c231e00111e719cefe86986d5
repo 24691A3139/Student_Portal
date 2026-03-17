@@ -1,0 +1,26 @@
+package mits.Student_Portal_Backend;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class Student_Controller {
+
+	private final Student_Service ss;
+	
+	public Student_Controller(Student_Service  ser) {
+		this.ss=ser;
+	}
+	
+	@PostMapping("/register")
+	public String register(@RequestBody Student user) {
+		ss.register(user);
+		return "User registered successfully";
+	}
+	@GetMapping("/retrive")
+	public Student retrive() {
+		return new Student("Bhavya","bhavyareddybilluri28@gmail.com",1234);
+	}
+}

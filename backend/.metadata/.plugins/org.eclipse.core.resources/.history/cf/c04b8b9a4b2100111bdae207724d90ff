@@ -1,0 +1,71 @@
+package mits.Student_Portal_Backend;
+
+import java.util.List;
+import java.util.Optional;
+import org.springframework.stereotype.Service;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+
+@Service
+public class Student_Service {
+
+// Injecting repository into service
+private final Student_Repo sr;
+BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+public Student_Service(Student_Repo repo) {
+    this.sr = repo;
+}
+
+// Registration
+public Student register(Student stu) {
+    return sr.save(stu);
+}
+
+// Login validation
+public Student login(String email, String password) {
+
+    Student user = sr.findByEmail(email);
+
+    if (user != null && password.equals(user.getPassword())) {
+        return user;
+    }
+
+    return null;
+}
+
+// Retrieve all students
+public List<Student> getAllStudents() {
+    return sr.findAll();
+}
+
+// Retrieve student by ID
+public Optional<Student> getStudentById(Long id) {
+    return sr.findById(id);
+}
+
+// Update student
+public Student updateStudent(Long id, Student s) {
+
+    Optional<Student> optional = sr.findById(id);
+
+    if (optional.isPresent()) {
+
+        Student existing = optional.get();
+
+        existing.setName(s.getName());
+        existing.setEmail(s.getEmail());
+        existing.setPassword(s.getPassword());
+        existing.setRole(s.getRole());
+
+        return sr.save(existing);
+    }
+
+    return null;
+}
+
+// Delete student
+public void deleteStudent(Long id) {
+    sr.deleteById(id);
+}
+
+}

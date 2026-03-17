@@ -1,0 +1,70 @@
+package mits.Student_Portal_Backend;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/api")
+@CrossOrigin(origins ="*")
+public class Student_Controller {
+	private final Student_Service ss;
+	public Student_Controller(Student_Service ser) {
+    this.ss = ser;
+	}
+
+// Register
+@PostMapping("/register")
+public String register(@RequestBody Student user) {
+    ss.register(user);
+    return "User registered successfully";
+}
+
+// Login
+@PostMapping("/login")
+public String login(@RequestBody Student user) {
+
+    Student existingUser = ss.login(user.getEmail(), user.getPassword());
+
+    if(existingUser != null){
+        return existingUser.getRole();   // returns "admin" or "student"
+    }
+
+    return "Invalid login";
+}
+
+// Get all students
+@GetMapping("/students")
+public List<Student> getStudents() {
+    return ss.getAllStudents();
+}
+
+// Get student by ID
+@GetMapping("/students/{id}")
+public Optional<Student> getStudentById(@PathVariable Long id){
+    return ss.getStudentById(id);
+}
+
+// Update student
+@PutMapping("/update/{id}")
+public Student updateStudent(@PathVariable Long id,@RequestBody Student st) {
+    return ss.updateStudent(id, st);
+}
+
+// Delete student
+@DeleteMapping("/delete/{id}")
+public String deleteStudent(@PathVariable Long id) {
+    ss.deleteStudent(id);
+    return "Deleted Successfully";
+}
+
+}

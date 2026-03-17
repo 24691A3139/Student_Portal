@@ -1,0 +1,5 @@
+package mits.Student_Portal_Backend;
+
+public class SecurityConfig {
+
+}
