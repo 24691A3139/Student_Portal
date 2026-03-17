@@ -1,13 +1,14 @@
+FROM maven:3.9.9-eclipse-temurin-21 AS build
+
+WORKDIR /app
+COPY . .
+RUN mvn clean package -DskipTests
+
 FROM eclipse-temurin:21-jdk
 
 WORKDIR /app
+COPY --from=build /app/target/*.jar app.jar
 
-COPY . .
+EXPOSE 8080
 
-# give permission to mvnw
-RUN chmod +x mvnw
-
-# build project
-RUN ./mvnw clean package -DskipTests
-
-CMD ["java","-jar","target/Student_Portal_Backend-0.0.1-SNAPSHOT.jar"]
+CMD ["java", "-jar", "app.jar"]
