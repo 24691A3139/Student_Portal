@@ -1,5 +1,4 @@
-const API="http://localhost:8080/api";
-
+const API="https://student-portal-backend.onrender.com/api";
 const loginPage=document.getElementById("loginPage");
 const registerPage=document.getElementById("registerPage");
 const sidebar=document.getElementById("sidebar");
